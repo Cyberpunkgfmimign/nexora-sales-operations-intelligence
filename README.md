@@ -11,19 +11,19 @@ A five-page Microsoft Power BI portfolio project for analyzing sales, profitabil
 ## Dashboard
 
 ### 1. Executive Overview
-![Executive Overview](screenshots/01_Executive_Overview.png)
+![Executive Overview](01_Executive_Overview.png)
 
 ### 2. Sales Performance
-![Sales Performance](screenshots/02_Sales_Performance.png)
+![Sales Performance](02_Sales_Performance.png)
 
 ### 3. Operations & Inventory
-![Operations & Inventory](screenshots/03_Operations_Inventory.png)
+![Operations & Inventory](03_Operations_Inventory.png)
 
 ### 4. Regional & Customer Intelligence
-![Regional & Customer Intelligence](screenshots/04_Regional_Customer_Intelligence.png)
+![Regional & Customer Intelligence](04_Regional_Customer_Intelligence.png)
 
 ### 5. Management Insights
-![Management Insights](screenshots/05_Management_Insights.png)
+![Management Insights](05_Management_Insights.png)
 
 ## Project Scope
 
@@ -104,15 +104,15 @@ The semantic model contains 11 tables:
 - FactInventory
 - FactTargets
 
-See [`documentation/Data_Model.md`](documentation/Data_Model.md) for the relationship map.
+See [`DATA_MODEL.md`](DATA_MODEL.md) for the relationship map.
 
 ## KPI Catalog
 
-See [`documentation/KPI_Definitions.md`](documentation/KPI_Definitions.md).
+See [`KPI_DEFINITIONS.md`](KPI_DEFINITIONS.md).
 
 ## QA
 
-See [`documentation/QA_Validation.md`](documentation/QA_Validation.md).
+See [`QA_VALIDATION.md`](QA_VALIDATION.md).
 
 ## Project Structure
 
@@ -121,10 +121,12 @@ See [`documentation/QA_Validation.md`](documentation/QA_Validation.md).
 ├── README.md
 ├── PORTFOLIO_DESCRIPTION.md
 ├── GITHUB_PUBLICATION_CHECKLIST.md
+├── DATA_MODEL.md
+├── KPI_DEFINITIONS.md
+├── QA_VALIDATION.md
+├── SKILLS_DEMONSTRATED.md
 ├── screenshots/
-├── powerbi/
-├── dax/
-└── documentation/
+└── powerbi/ / dax/ (planned final artifacts)
 ```
 
 ## Data & Reproducibility
