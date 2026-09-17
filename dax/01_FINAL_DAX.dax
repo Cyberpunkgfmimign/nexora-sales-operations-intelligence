@@ -1,0 +1,67 @@
+-- NEXORA SALES & OPERATIONS PERFORMANCE INTELLIGENCE
+-- Production measure definitions for Power BI DAX Query View.
+-- Use this file to create/update measures via DAX Query View, then "Update model with changes".
+
+DEFINE
+    MEASURE FactSales[Total Revenue] = SUM ( FactSales[Revenue] )
+    MEASURE FactSales[Total Cost] = SUM ( FactSales[Cost] )
+    MEASURE FactSales[Gross Profit] = SUM ( FactSales[GrossProfit] )
+    MEASURE FactSales[Gross Margin %] = DIVIDE ( [Gross Profit], [Total Revenue] )
+    MEASURE FactSales[Total Orders] = DISTINCTCOUNT ( FactSales[OrderID] )
+    MEASURE FactSales[Completed Orders] = CALCULATE ( [Total Orders], FactSales[OrderStatus] = "Completed" )
+    MEASURE FactSales[Returned Orders] = CALCULATE ( [Total Orders], FactSales[OrderStatus] = "Returned" )
+    MEASURE FactSales[Cancelled Orders] = CALCULATE ( [Total Orders], FactSales[OrderStatus] = "Cancelled" )
+    MEASURE FactSales[Return Rate %] = DIVIDE ( [Returned Orders], [Total Orders] )
+    MEASURE FactSales[Cancellation Rate %] = DIVIDE ( [Cancelled Orders], [Total Orders] )
+    MEASURE FactSales[Units Sold] = CALCULATE ( SUM ( FactSales[Quantity] ), FactSales[OrderStatus] <> "Cancelled" )
+    MEASURE FactSales[Completed Revenue] = CALCULATE ( [Total Revenue], FactSales[OrderStatus] = "Completed" )
+    MEASURE FactSales[Completed Cost] = CALCULATE ( [Total Cost], FactSales[OrderStatus] = "Completed" )
+    MEASURE FactSales[Completed Gross Profit] = CALCULATE ( [Gross Profit], FactSales[OrderStatus] = "Completed" )
+    MEASURE FactSales[Completed Margin %] = DIVIDE ( [Completed Gross Profit], [Completed Revenue] )
+    MEASURE FactSales[AOV] = DIVIDE ( [Completed Revenue], [Completed Orders] )
+    MEASURE FactSales[Customers] = DISTINCTCOUNT ( FactSales[CustomerID] )
+    MEASURE FactSales[Avg Discount %] = AVERAGE ( FactSales[DiscountRate] )
+    MEASURE FactSales[Previous Period Revenue] = CALCULATE ( [Total Revenue], DATEADD ( DimDate[Date], -1, MONTH ) )
+    MEASURE FactSales[Revenue Growth %] = DIVIDE ( [Total Revenue] - [Previous Period Revenue], [Previous Period Revenue] )
+    MEASURE FactSales[Target Revenue] = SUM ( FactTargets[TargetRevenue] )
+    MEASURE FactSales[Target Variance] = [Total Revenue] - [Target Revenue]
+    MEASURE FactSales[Target Achievement %] = DIVIDE ( [Total Revenue], [Target Revenue] )
+    MEASURE FactSales[Revenue per Customer] = DIVIDE ( [Total Revenue], [Customers] )
+    MEASURE FactSales[Gross Profit per Order] = DIVIDE ( [Gross Profit], [Total Orders] )
+    MEASURE FactSales[Units per Completed Order] = DIVIDE ( [Units Sold], [Completed Orders] )
+    MEASURE FactInventory[Stock On Hand] = SUM ( FactInventory[StockOnHand] )
+    MEASURE FactInventory[Inventory Value] = SUM ( FactInventory[InventoryValue] )
+    MEASURE FactInventory[Low Stock Items] = CALCULATE ( DISTINCTCOUNT ( FactInventory[ProductID] ), FactInventory[StockStatus] = "Low Stock" )
+    MEASURE FactInventory[Stockout Items] = CALCULATE ( DISTINCTCOUNT ( FactInventory[ProductID] ), FactInventory[StockStatus] = "Stockout" )
+    MEASURE FactInventory[Stockout Rate %] = DIVIDE ( [Stockout Items], DISTINCTCOUNT ( FactInventory[ProductID] ) )
+    MEASURE FactInventory[Inventory Turnover] = DIVIDE ( [Total Cost], [Inventory Value] )
+    MEASURE FactInventory[Units Sold per Stock Unit] = DIVIDE ( [Units Sold], [Stock On Hand] )
+    MEASURE FactInventory[Inventory Risk Items] = CALCULATE ( DISTINCTCOUNT ( FactInventory[ProductID] ), FactInventory[StockStatus] IN { "Low Stock", "Stockout" } )
+    MEASURE FactInventory[Inventory Risk Rate %] = DIVIDE ( [Inventory Risk Items], DISTINCTCOUNT ( FactInventory[ProductID] ) )
+    MEASURE FactInventory[Fast Mover Units 30D] = CALCULATE ( SUM ( FactInventory[UnitsSoldLast30Days] ), FactInventory[UnitsSoldLast30Days] > 0 )
+    MEASURE FactInventory[Slow Mover Items] = CALCULATE ( DISTINCTCOUNT ( FactInventory[ProductID] ), FactInventory[UnitsSoldLast30Days] = 0, FactInventory[StockOnHand] > 0 )
+    MEASURE FactInventory[Average Reorder Point] = AVERAGE ( FactInventory[ReorderPoint] )
+    MEASURE FactInventory[Stock Coverage Ratio] = DIVIDE ( [Stock On Hand], SUM ( FactInventory[UnitsSoldLast30Days] ) )
+    MEASURE FactSales[Revenue Share %] = DIVIDE ( [Total Revenue], CALCULATE ( [Total Revenue], ALL ( FactSales ) ) )
+    MEASURE FactSales[Margin Variance to Target %] = [Gross Margin %] - AVERAGE ( DimCategory[TargetMargin] )
+    MEASURE FactSales[Top Product Revenue] = MAXX ( TOPN ( 1, VALUES ( DimProduct[ProductID] ), [Total Revenue], DESC ), [Total Revenue] )
+    MEASURE FactSales[Active Customers] = CALCULATE ( [Customers], FactSales[OrderStatus] = "Completed" )
+
+EVALUATE
+ROW (
+    "Total Revenue", [Total Revenue],
+    "Total Cost", [Total Cost],
+    "Gross Profit", [Gross Profit],
+    "Gross Margin %", [Gross Margin %],
+    "Total Orders", [Total Orders],
+    "Completed Orders", [Completed Orders],
+    "Units Sold", [Units Sold],
+    "AOV", [AOV],
+    "Customers", [Customers],
+    "Target Revenue", [Target Revenue],
+    "Target Achievement %", [Target Achievement %],
+    "Inventory Value", [Inventory Value],
+    "Stock On Hand", [Stock On Hand],
+    "Low Stock Items", [Low Stock Items],
+    "Stockout Items", [Stockout Items]
+)
