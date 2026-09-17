@@ -1,0 +1,95 @@
+// NEXORA — TMDL SCRIPT 2: PRODUCTION MEASURES
+// Run this as ONE TMDL command in Power BI TMDL View.
+// Measures are split by table using partial table declarations.
+
+createOrReplace
+
+    ref table FactSales
+        measure 'Total Revenue' = SUM ( FactSales[Revenue] )
+            formatString: #,##0.00
+        measure 'Total Cost' = SUM ( FactSales[Cost] )
+            formatString: #,##0.00
+        measure 'Gross Profit' = SUM ( FactSales[GrossProfit] )
+            formatString: #,##0.00
+        measure 'Gross Margin %' = DIVIDE ( [Gross Profit], [Total Revenue] )
+            formatString: 0.0%
+        measure 'Total Orders' = DISTINCTCOUNT ( FactSales[OrderID] )
+            formatString: #,##0
+        measure 'Completed Orders' = CALCULATE ( [Total Orders], FactSales[OrderStatus] = "Completed" )
+            formatString: #,##0
+        measure 'Returned Orders' = CALCULATE ( [Total Orders], FactSales[OrderStatus] = "Returned" )
+            formatString: #,##0
+        measure 'Cancelled Orders' = CALCULATE ( [Total Orders], FactSales[OrderStatus] = "Cancelled" )
+            formatString: #,##0
+        measure 'Return Rate %' = DIVIDE ( [Returned Orders], [Total Orders] )
+            formatString: 0.0%
+        measure 'Cancellation Rate %' = DIVIDE ( [Cancelled Orders], [Total Orders] )
+            formatString: 0.0%
+        measure 'Units Sold' = CALCULATE ( SUM ( FactSales[Quantity] ), FactSales[OrderStatus] <> "Cancelled" )
+            formatString: #,##0
+        measure 'Completed Revenue' = CALCULATE ( [Total Revenue], FactSales[OrderStatus] = "Completed" )
+            formatString: #,##0.00
+        measure 'Completed Cost' = CALCULATE ( [Total Cost], FactSales[OrderStatus] = "Completed" )
+            formatString: #,##0.00
+        measure 'Completed Gross Profit' = CALCULATE ( [Gross Profit], FactSales[OrderStatus] = "Completed" )
+            formatString: #,##0.00
+        measure 'Completed Margin %' = DIVIDE ( [Completed Gross Profit], [Completed Revenue] )
+            formatString: 0.0%
+        measure 'AOV' = DIVIDE ( [Completed Revenue], [Completed Orders] )
+            formatString: #,##0.00
+        measure 'Customers' = DISTINCTCOUNT ( FactSales[CustomerID] )
+            formatString: #,##0
+        measure 'Avg Discount %' = AVERAGE ( FactSales[DiscountRate] )
+            formatString: 0.0%
+        measure 'Previous Period Revenue' = CALCULATE ( [Total Revenue], DATEADD ( DimDate[Date], -1, MONTH ) )
+            formatString: #,##0.00
+        measure 'Revenue Growth %' = DIVIDE ( [Total Revenue] - [Previous Period Revenue], [Previous Period Revenue] )
+            formatString: 0.0%
+        measure 'Target Revenue' = SUM ( FactTargets[TargetRevenue] )
+            formatString: #,##0.00
+        measure 'Target Variance' = [Total Revenue] - [Target Revenue]
+            formatString: #,##0.00
+        measure 'Target Achievement %' = DIVIDE ( [Total Revenue], [Target Revenue] )
+            formatString: 0.0%
+        measure 'Revenue per Customer' = DIVIDE ( [Total Revenue], [Customers] )
+            formatString: #,##0.00
+        measure 'Gross Profit per Order' = DIVIDE ( [Gross Profit], [Total Orders] )
+            formatString: #,##0.00
+        measure 'Units per Completed Order' = DIVIDE ( [Units Sold], [Completed Orders] )
+            formatString: #,##0.00
+        measure 'Revenue Share %' = DIVIDE ( [Total Revenue], CALCULATE ( [Total Revenue], ALL ( FactSales ) ) )
+            formatString: 0.0%
+        measure 'Margin Variance to Target %' = [Gross Margin %] - AVERAGE ( DimCategory[TargetMargin] )
+            formatString: 0.0%
+        measure 'Top Product Revenue' = MAXX ( TOPN ( 1, VALUES ( DimProduct[ProductID] ), [Total Revenue], DESC ), [Total Revenue] )
+            formatString: #,##0.00
+        measure 'Active Customers' = CALCULATE ( [Customers], FactSales[OrderStatus] = "Completed" )
+            formatString: #,##0
+
+    ref table FactInventory
+        measure 'Stock On Hand' = SUM ( FactInventory[StockOnHand] )
+            formatString: #,##0
+        measure 'Inventory Value' = SUM ( FactInventory[InventoryValue] )
+            formatString: #,##0.00
+        measure 'Low Stock Items' = CALCULATE ( DISTINCTCOUNT ( FactInventory[ProductID] ), FactInventory[StockStatus] = "Low Stock" )
+            formatString: #,##0
+        measure 'Stockout Items' = CALCULATE ( DISTINCTCOUNT ( FactInventory[ProductID] ), FactInventory[StockStatus] = "Stockout" )
+            formatString: #,##0
+        measure 'Stockout Rate %' = DIVIDE ( [Stockout Items], DISTINCTCOUNT ( FactInventory[ProductID] ) )
+            formatString: 0.0%
+        measure 'Inventory Turnover' = DIVIDE ( [Total Cost], [Inventory Value] )
+            formatString: 0.00
+        measure 'Units Sold per Stock Unit' = DIVIDE ( [Units Sold], [Stock On Hand] )
+            formatString: 0.00
+        measure 'Inventory Risk Items' = CALCULATE ( DISTINCTCOUNT ( FactInventory[ProductID] ), FactInventory[StockStatus] IN { "Low Stock", "Stockout" } )
+            formatString: #,##0
+        measure 'Inventory Risk Rate %' = DIVIDE ( [Inventory Risk Items], DISTINCTCOUNT ( FactInventory[ProductID] ) )
+            formatString: 0.0%
+        measure 'Fast Mover Units 30D' = CALCULATE ( SUM ( FactInventory[UnitsSoldLast30Days] ), FactInventory[UnitsSoldLast30Days] > 0 )
+            formatString: #,##0
+        measure 'Slow Mover Items' = CALCULATE ( DISTINCTCOUNT ( FactInventory[ProductID] ), FactInventory[UnitsSoldLast30Days] = 0, FactInventory[StockOnHand] > 0 )
+            formatString: #,##0
+        measure 'Average Reorder Point' = AVERAGE ( FactInventory[ReorderPoint] )
+            formatString: #,##0.00
+        measure 'Stock Coverage Ratio' = DIVIDE ( [Stock On Hand], SUM ( FactInventory[UnitsSoldLast30Days] ) )
+            formatString: 0.00
