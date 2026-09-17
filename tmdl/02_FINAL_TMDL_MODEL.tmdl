@@ -1,0 +1,78 @@
+// NEXORA — TMDL SCRIPT 1: MODEL RELATIONSHIPS
+// Current TMDL syntax. Run this as ONE TMDL command in Power BI TMDL View.
+// IMPORTANT: Preview changes first. If Power BI already auto-created an identical
+// relationship, keep the existing relationship and do not create a duplicate.
+
+createOrReplace
+
+    relationship Nexora_FactSales_OrderDate_DimDate
+        fromColumn: FactSales.OrderDate
+        toColumn: DimDate.Date
+        isActive: true
+        crossFilteringBehavior: oneDirection
+
+    relationship Nexora_FactSales_Product_DimProduct
+        fromColumn: FactSales.ProductID
+        toColumn: DimProduct.ProductID
+        isActive: true
+        crossFilteringBehavior: oneDirection
+
+    relationship Nexora_FactSales_Customer_DimCustomer
+        fromColumn: FactSales.CustomerID
+        toColumn: DimCustomer.CustomerID
+        isActive: true
+        crossFilteringBehavior: oneDirection
+
+    relationship Nexora_FactSales_Employee_DimEmployee
+        fromColumn: FactSales.EmployeeID
+        toColumn: DimEmployee.EmployeeID
+        isActive: true
+        crossFilteringBehavior: oneDirection
+
+    relationship Nexora_FactSales_Region_DimRegion
+        fromColumn: FactSales.RegionID
+        toColumn: DimRegion.RegionID
+        isActive: true
+        crossFilteringBehavior: oneDirection
+
+    relationship Nexora_FactSales_Channel_DimChannel
+        fromColumn: FactSales.ChannelID
+        toColumn: DimChannel.ChannelID
+        isActive: true
+        crossFilteringBehavior: oneDirection
+
+    relationship Nexora_FactInventory_SnapshotDate_DimDate
+        fromColumn: FactInventory.SnapshotDate
+        toColumn: DimDate.Date
+        isActive: true
+        crossFilteringBehavior: oneDirection
+
+    relationship Nexora_FactInventory_Product_DimProduct
+        fromColumn: FactInventory.ProductID
+        toColumn: DimProduct.ProductID
+        isActive: true
+        crossFilteringBehavior: oneDirection
+
+    relationship Nexora_FactInventory_Region_DimRegion
+        fromColumn: FactInventory.RegionID
+        toColumn: DimRegion.RegionID
+        isActive: true
+        crossFilteringBehavior: oneDirection
+
+    relationship Nexora_FactTargets_TargetMonth_DimDate
+        fromColumn: FactTargets.TargetMonth
+        toColumn: DimDate.Date
+        isActive: true
+        crossFilteringBehavior: oneDirection
+
+    relationship Nexora_FactTargets_Region_DimRegion
+        fromColumn: FactTargets.RegionID
+        toColumn: DimRegion.RegionID
+        isActive: true
+        crossFilteringBehavior: oneDirection
+
+    relationship Nexora_FactTargets_Category_DimCategory
+        fromColumn: FactTargets.CategoryKey
+        toColumn: DimCategory.CategoryKey
+        isActive: true
+        crossFilteringBehavior: oneDirection
