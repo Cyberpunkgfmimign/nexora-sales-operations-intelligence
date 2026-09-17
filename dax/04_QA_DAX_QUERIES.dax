@@ -1,0 +1,101 @@
+-- NEXORA QA DAX QUERIES
+-- Run each EVALUATE block in Power BI DAX Query View.
+
+EVALUATE
+ROW (
+    "Revenue", [Total Revenue],
+    "Cost", [Total Cost],
+    "Gross Profit", [Gross Profit],
+    "Orders", [Total Orders],
+    "Completed Orders", [Completed Orders],
+    "Units Sold", [Units Sold],
+    "Customers", [Customers],
+    "Target Revenue", [Target Revenue],
+    "Inventory Value", [Inventory Value],
+    "Stock On Hand", [Stock On Hand]
+)
+
+-- QA_QUERY_02 — transaction-level financial reconciliation
+EVALUATE
+ROW (
+    "Revenue Mismatch Rows",
+        COUNTROWS (
+            FILTER (
+                FactSales,
+                NOT ISBLANK ( FactSales[Revenue] )
+                    && ABS (
+                        FactSales[Revenue]
+                            - SWITCH (
+                                TRUE (),
+                                FactSales[OrderStatus] = "Cancelled", 0,
+                                FactSales[OrderStatus] = "Returned", -1,
+                                FactSales[Quantity] * FactSales[UnitPrice] * ( 1 - FactSales[DiscountRate] )
+                            )
+                    ) > 0.01
+            )
+        ),
+    "Cost Mismatch Rows",
+        COUNTROWS (
+            FILTER (
+                FactSales,
+                ABS (
+                    FactSales[Cost]
+                        - IF ( FactSales[OrderStatus] = "Cancelled", 0, FactSales[Quantity] * FactSales[UnitCost] )
+                ) > 0.01
+            )
+        ),
+    "Gross Profit Mismatch Rows",
+        COUNTROWS (
+            FILTER (
+                FactSales,
+                ABS ( FactSales[GrossProfit] - ( FactSales[Revenue] - FactSales[Cost] ) ) > 0.01
+            )
+        )
+)
+
+-- QA_QUERY_03 — key counts
+EVALUATE
+ROW (
+    "Tables Expected", 11,
+    "DimDate Rows", COUNTROWS ( DimDate ),
+    "Products", DISTINCTCOUNT ( DimProduct[ProductID] ),
+    "Customers", DISTINCTCOUNT ( DimCustomer[CustomerID] ),
+    "Employees", DISTINCTCOUNT ( DimEmployee[EmployeeID] ),
+    "Regions", DISTINCTCOUNT ( DimRegion[RegionID] ),
+    "Channels", DISTINCTCOUNT ( DimChannel[ChannelID] ),
+    "Orders", DISTINCTCOUNT ( FactSales[OrderID] ),
+    "Inventory Rows", COUNTROWS ( FactInventory ),
+    "Target Rows", COUNTROWS ( FactTargets )
+)
+
+-- QA_QUERY_04 — order status control
+EVALUATE
+SUMMARIZECOLUMNS (
+    FactSales[OrderStatus],
+    "Orders", [Total Orders],
+    "Revenue", [Total Revenue],
+    "Cost", [Total Cost],
+    "Gross Profit", [Gross Profit]
+)
+
+-- QA_QUERY_05 — monthly reconciliation
+EVALUATE
+SUMMARIZECOLUMNS (
+    DimDate[YearMonth],
+    "Revenue", [Total Revenue],
+    "Previous Month Revenue", [Previous Period Revenue],
+    "Growth %", [Revenue Growth %],
+    "Target", [Target Revenue],
+    "Variance", [Target Variance],
+    "Achievement %", [Target Achievement %]
+)
+ORDER BY DimDate[YearMonth]
+
+-- QA_QUERY_06 — inventory risk
+EVALUATE
+SUMMARIZECOLUMNS (
+    FactInventory[StockStatus],
+    "Items", DISTINCTCOUNT ( FactInventory[ProductID] ),
+    "Stock On Hand", [Stock On Hand],
+    "Inventory Value", [Inventory Value]
+)
