@@ -106,13 +106,31 @@ The semantic model contains 11 tables:
 
 See [`DATA_MODEL.md`](DATA_MODEL.md) for the relationship map.
 
+## Technical Artifacts
+
+- [`dax/01_FINAL_DAX.dax`](dax/01_FINAL_DAX.dax) — production measures and KPI test output
+- [`dax/04_QA_DAX_QUERIES.dax`](dax/04_QA_DAX_QUERIES.dax) — QA/reconciliation queries
+- [`tmdl/02_FINAL_TMDL_MODEL.tmdl`](tmdl/02_FINAL_TMDL_MODEL.tmdl) — 12 relationship definitions
+- [`tmdl/03_FINAL_TMDL_MEASURES.tmdl`](tmdl/03_FINAL_TMDL_MEASURES.tmdl) — production measure definitions
+- [`theme/NEXORA_Cyberpunk_Theme.json`](theme/NEXORA_Cyberpunk_Theme.json) — report theme
+- [`powerbi/README.md`](powerbi/README.md) — PBIP/PBIR project notes
+
 ## KPI Catalog
 
-See [`KPI_DEFINITIONS.md`](KPI_DEFINITIONS.md).
+See [`KPI_DEFINITIONS.md`](KPI_DEFINITIONS.md) and [`documentation/08_FINAL_MEASURE_CATALOG.md`](documentation/08_FINAL_MEASURE_CATALOG.md).
 
 ## QA
 
-See [`QA_VALIDATION.md`](QA_VALIDATION.md).
+See [`QA_VALIDATION.md`](QA_VALIDATION.md) and [`documentation/06_MODEL_VALIDATION.md`](documentation/06_MODEL_VALIDATION.md).
+
+## Documentation
+
+- [`documentation/05_RELATIONSHIP_MAP.md`](documentation/05_RELATIONSHIP_MAP.md)
+- [`documentation/06_MODEL_VALIDATION.md`](documentation/06_MODEL_VALIDATION.md)
+- [`documentation/07_DASHBOARD_BUILD_ORDER.md`](documentation/07_DASHBOARD_BUILD_ORDER.md)
+- [`documentation/08_FINAL_MEASURE_CATALOG.md`](documentation/08_FINAL_MEASURE_CATALOG.md)
+- [`documentation/09_FINAL_PORTFOLIO_README.md`](documentation/09_FINAL_PORTFOLIO_README.md)
+- [`documentation/10_ONE_HOUR_BUILD_GUIDE.md`](documentation/10_ONE_HOUR_BUILD_GUIDE.md)
 
 ## Project Structure
 
@@ -125,15 +143,21 @@ See [`QA_VALIDATION.md`](QA_VALIDATION.md).
 ├── KPI_DEFINITIONS.md
 ├── QA_VALIDATION.md
 ├── SKILLS_DEMONSTRATED.md
-├── screenshots/
-└── powerbi/ / dax/ (planned final artifacts)
+├── 01_Executive_Overview.png
+├── 02_Sales_Performance.png
+├── 03_Operations_Inventory.png
+├── 04_Regional_Customer_Intelligence.png
+├── 05_Management_Insights.png
+├── dax/
+├── tmdl/
+├── theme/
+├── documentation/
+└── powerbi/
 ```
 
 ## Data & Reproducibility
 
-The public package intentionally does **not** include the source Excel workbook.
-
-The PBIP uses a local Excel source during development. Before publishing a publicly runnable PBIP, verify that the source data may be shared and update the source connection if necessary.
+The public package intentionally does **not** include the source Excel workbook. The source dataset remains read-only/source-of-truth material. Before publishing a publicly runnable PBIP, verify that the source data may be shared and update the source connection if necessary.
 
 ## Author
 
