@@ -1,0 +1,49 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/powerbi-desktop-samples/main/Report%20Theme%20JSON%20Schema/reportThemeSchema-2.157.json",
+  "name": "NEXORA_Cyberpunk_Theme",
+  "dataColors": ["#00F5D4", "#00D9FF", "#7C4DFF", "#FF3CAC", "#FFB703", "#2AF598", "#18A0FB", "#B5179E", "#F72585", "#39FF88", "#8BE9FD", "#00FFA3"],
+  "good": "#39FF88",
+  "neutral": "#FFB703",
+  "bad": "#FF4D6D",
+  "maximum": "#00F5D4",
+  "center": "#7C4DFF",
+  "minimum": "#062A36",
+  "null": "#FF7F48",
+  "firstLevelElements": "#E8FBFF",
+  "secondLevelElements": "#9EC8D4",
+  "thirdLevelElements": "#16313D",
+  "fourthLevelElements": "#5E8795",
+  "foreground": "#E8FBFF",
+  "background": "#07141B",
+  "secondaryBackground": "#0D232D",
+  "tableAccent": "#00F5D4",
+  "textClasses": {
+    "callout": {"fontSize": 22, "fontFace": "Segoe UI Semibold", "color": "#F4FEFF"},
+    "title": {"fontSize": 12, "fontFace": "Segoe UI Semibold", "color": "#E8FBFF", "bold": true},
+    "header": {"fontSize": 12, "fontFace": "Segoe UI Semibold", "color": "#E8FBFF", "bold": true},
+    "label": {"fontSize": 10, "fontFace": "Segoe UI", "color": "#B8DCE5"}
+  },
+  "visualStyles": {
+    "*": {"*": {
+      "background": [{"show": true, "color": {"solid": {"color": "#0A2029"}}, "transparency": 6}],
+      "border": [{"show": true, "color": {"solid": {"color": "#0BE7FF"}}, "radius": 8, "width": 1}],
+      "dropShadow": [{"show": false}],
+      "title": [{"show": true, "fontFamily": "Segoe UI Semibold", "fontSize": 12, "fontColor": {"solid": {"color": "#E8FBFF"}}}],
+      "subTitle": [{"show": true, "fontFamily": "Segoe UI", "fontSize": 9, "fontColor": {"solid": {"color": "#79AEBB"}}}],
+      "visualHeader": [{"show": true, "foreground": {"solid": {"color": "#8BE9FD"}}, "background": {"solid": {"color": "#07141B"}}}],
+      "categoryAxis": [{"labelColor": {"solid": {"color": "#9EC8D4"}}, "gridlineColor": {"solid": {"color": "#16414E"}}}],
+      "valueAxis": [{"labelColor": {"solid": {"color": "#9EC8D4"}}, "gridlineColor": {"solid": {"color": "#16414E"}}}],
+      "legend": [{"labelColor": {"solid": {"color": "#B8DCE5"}}}],
+      "dataPoint": [{"fill": {"solid": {"color": "#00F5D4"}}}]
+    }},
+    "cardVisual": {"*": {
+      "background": [{"show": true, "color": {"solid": {"color": "#0B2029"}}, "transparency": 0}],
+      "border": [{"show": true, "color": {"solid": {"color": "#00F5D4"}}, "radius": 10, "width": 1}],
+      "labels": [{"color": {"solid": {"color": "#F4FEFF"}}}],
+      "categoryLabels": [{"color": {"solid": {"color": "#6FD3E6"}}}]
+    }},
+    "clusteredBarChart": {"*": {"dataPoint": [{"fill": {"solid": {"color": "#00D9FF"}}}], "labels": [{"color": {"solid": {"color": "#DFFBFF"}}}]}},
+    "lineChart": {"*": {"dataPoint": [{"fill": {"solid": {"color": "#00F5D4"}}}], "lineStyles": [{"strokeWidth": 3}]}},
+    "lineClusteredColumnComboChart": {"*": {"dataPoint": [{"fill": {"solid": {"color": "#00D9FF"}}}], "lineStyles": [{"strokeWidth": 3}]}}
+  }
+}
